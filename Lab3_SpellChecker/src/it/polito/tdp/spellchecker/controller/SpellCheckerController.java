@@ -1,9 +1,12 @@
 package it.polito.tdp.spellchecker.controller;
 
 import java.net.URL;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import it.polito.tdp.spellchecker.model.Dictionary;
+import it.polito.tdp.spellchecker.model.RichWord;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -44,12 +47,52 @@ public class SpellCheckerController {
 
     @FXML
     void doClearText(ActionEvent event) {
+    	txtTesto.clear();
+    	txtwrong.clear();
+    	txterror.setText(null);
+    	txttempo.setText(null);
 
     }
 
     @FXML
-    void doSpellCheck(ActionEvent event) {
-
+    void doSpellCheck(ActionEvent event) { //solo questo metodo può interagire
+    										//con l'interfaccia a prendere le parole inserite dall'utente
+    	
+    	long tempoinizio=System.nanoTime();
+    	
+    	//PULISCO L'INPUT PRESO DALL'INTERFACCIA
+    	String[] input = txtTesto.getText()
+    	.replaceAll("[.,\\/#!$%\\^&\\*;:{}=\\-_`~()\\[\\]\"]", "")
+    	.toLowerCase()
+    	.split(" ");
+    	
+    	//SALVO L'INPUT IN UNA STRINGA
+    	List<String> inputlist = new LinkedList<String>(); 
+//    	int i=0;
+//    	for(i=0; i<input.length; i++) {
+//    		inputlist.add(input[i]);
+//    	}
+    	for (String s : input) {
+    		inputlist.add(s);
+    	}
+    	
+    	Dictionary d = new Dictionary();
+    	d.loadDictionary(menu.getValue());
+    	List<RichWord> listaRW = d.spellCheckText(inputlist);
+    	
+    	int i=0;
+    	for(RichWord tmp: listaRW) {
+    		if(!tmp.isCorretta()) {
+    			txtwrong.appendText(tmp.getParolainput()+"\n");
+    			i++;
+    		}
+    	}
+    	txterror.setText("The text contains "+ i + " errors");
+    	long tempofine=System.nanoTime();
+    	double t=(double) (tempofine-tempoinizio)/Math.pow(10, 9);
+    	txttempo.setText(null);
+    	txttempo.setText( "Tempo esecuzione: " + t+ " seconds");
+    	
     }
 
     @FXML

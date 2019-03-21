@@ -8,10 +8,10 @@ import java.util.List;
 
 public class Dictionary {
 
-	private List<String> dizionarioIta = new LinkedList<String>();
-	private List<String> dizionarioIng = new LinkedList<String>();
+	private List<String> dizionario = new LinkedList<String>();
 	
-	public void Dictionay() { //controller
+	
+	public void Dictionay() { //costruttore
 		
 	}
 	
@@ -20,6 +20,7 @@ public class Dictionary {
 	 * @param language
 	 */
 	public void loadDictionary(String language) {
+		if (language.equals("English")) {
 		
 		try {
 			FileReader fr = new FileReader( "rsc/English.txt" );
@@ -27,25 +28,27 @@ public class Dictionary {
 			String word ;
 			while (( word = br .readLine()) != null ) {
 			// Aggiungere parola alla struttura dati
-				dizionarioIng.add(word);
+				dizionario.add(word);
 			}
 			br .close();
 			} catch (IOException e ){
 			System. out .println( "Errore nella lettura del file" );
 			}
-	
-	
-	try {
-		FileReader fr = new FileReader( "rsc/Italian.txt" );
-		BufferedReader br = new BufferedReader(fr);
-		String word ;
-		while (( word = br .readLine()) != null ) {
-		// Aggiungere parola alla struttura dati
-			dizionarioIta.add(word);
 		}
-		br .close();
-		} catch (IOException e ){
-		System. out .println( "Errore nella lettura del file" );
+	
+		else if (language.equals("Italian")){
+			try {
+				FileReader fr = new FileReader( "rsc/Italian.txt" );
+				BufferedReader br = new BufferedReader(fr);
+				String word ;
+				while (( word = br .readLine()) != null ) {
+				// Aggiungere parola alla struttura dati
+					dizionario.add(word);
+				}
+				br .close();
+				} catch (IOException e ){
+				System. out .println( "Errore nella lettura del file" );
+				}
 		}
 	}
 	
@@ -63,6 +66,21 @@ public class Dictionary {
 	
 	public List<RichWord> spellCheckText(List<String> inputTextList ){
 		
+		List<RichWord> listaRW = new LinkedList<RichWord>();
+		
+		for(String tmp: inputTextList) {
+			if(dizionario.contains(tmp)) {
+				RichWord rw = new RichWord(tmp, true);
+				listaRW.add(rw);
+			} else {
+				RichWord rw = new RichWord(tmp, false);
+				listaRW.add(rw);
+			}
+				
+		}
+		
+		
+		return listaRW;
 	}
 }
 
