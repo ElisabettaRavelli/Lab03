@@ -23,9 +23,9 @@
       </Label>
    </top>
    <center>
-      <VBox BorderPane.alignment="CENTER">
+      <VBox minWidth="-Infinity" BorderPane.alignment="CENTER">
          <children>
-            <HBox>
+            <HBox minWidth="-Infinity">
                <children>
                   <Label text="Choose the language:">
                      <HBox.margin>
@@ -61,7 +61,7 @@
                   <Insets left="10.0" right="10.0" />
                </VBox.margin>
             </TextArea>
-            <HBox>
+            <HBox minWidth="-Infinity">
                <children>
                   <Text fx:id="txterror" strokeType="OUTSIDE" strokeWidth="0.0">
                      <HBox.margin>
